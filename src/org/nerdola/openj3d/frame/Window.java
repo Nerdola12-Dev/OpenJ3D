@@ -82,6 +82,17 @@ public class Window extends Canvas {
         this.width = width;
         this.height = height;
     }
+    
+    public Window setWindowSize(int width, int height) {
+        // chama o setSize acima (que é void)
+        setSize(width, height);
+        return this;
+    }
+    
+    public int getFPS() {
+		return fps;
+	}
+
     public Window setResizable(boolean r) { this.resizable = r; return this; }
     public Window setFullscreen(boolean f) { this.fullscreen = f; return this; }
     public Window setOpacity(float o) { this.opacity = o; return this; }
