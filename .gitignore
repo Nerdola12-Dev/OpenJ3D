@@ -1,0 +1,23 @@
+# Eclipse metadata
+.metadata/
+*.log
+*.tmp
+ECHO est† desativado.
+# Compilados Java
+*.class
+*.jar
+*.war
+*.ear
+ECHO est† desativado.
+# IDEs
+.vscode/
+.idea/
+*.iml
+ECHO est† desativado.
+# Pastas bin√°rias
+bin/
+out/
+ECHO est† desativado.
+# Sistema
+.DS_Store
+Thumbs.db
