@@ -45,7 +45,7 @@ public class ObjLoader implements ModelLoader {
                 String[] parts = line.split("\\s+");
                 vertices.add(new Vertex(
                         Double.parseDouble(parts[1]),
-                        Double.parseDouble(parts[2]),
+                        -Double.parseDouble(parts[2]),
                         Double.parseDouble(parts[3])
                 ));
             } else if (line.startsWith("vt ")) {
