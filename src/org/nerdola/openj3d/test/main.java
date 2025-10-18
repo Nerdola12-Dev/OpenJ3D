@@ -6,8 +6,7 @@ import org.nerdola.openj3d.core.Renderer3D;
 import org.nerdola.openj3d.core.Triangle;
 import org.nerdola.openj3d.core.Vertex;
 import org.nerdola.openj3d.frame.Window;
-import org.nerdola.openj3d.io.GLTFLoader;
-import org.nerdola.openj3d.io.ObjLoader;
+import org.nerdola.openj3d.io.OpenJ3DModelLoader;
 
 import java.awt.Color;
 import java.io.File;
@@ -21,8 +20,26 @@ public class main {
 
     public static void main(String[] args) throws IOException {
     	
-    	Mesh cube = new GLTFLoader().load(new File("C:\\Users\\Bernardes\\Desktop\\model\\glft\\exemplo.gltf"));
-
+    	//Mesh cube = new ObjLoader().load(new File("C:\\Users\\Bernardes\\Desktop\\model\\car\\car.obj"));
+    	/*
+    	List<Triangle> triangle = new ArrayList<Triangle>();
+    	triangle.add(new Triangle(
+    			new Vertex(0, -200, -200),
+    			new Vertex(0, -200, 200),
+    			new Vertex(0, 200, -200),
+    			Color.CYAN
+    	));
+    	triangle.add(new Triangle(
+    			new Vertex(0, 200, -200),
+    			new Vertex(0, 200, 200),
+    			new Vertex(0, -200, 200),
+    			Color.RED
+    	));
+    	Mesh cube = new Mesh(triangle);
+    	*/
+    	
+    	Mesh cube = new OpenJ3DModelLoader().load(new File("C:\\Users\\Bernardes\\Desktop\\CrystalMonolith.oj3d"));
+    	
         Renderer3D renderer = new Renderer3D();
 
         Window window = new Window()
@@ -31,7 +48,7 @@ public class main {
                 .setLimitFPS(144)
                 .showFPS(true)
                 .onUpdate(() -> angle += 0.01) // rotaciona a mesh 
-                .setResizable(false);
+                .setResizable(true);
         
         window.onRender(g -> {
             int w = window.getWidth();

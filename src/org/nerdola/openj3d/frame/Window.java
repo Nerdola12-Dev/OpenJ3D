@@ -159,28 +159,45 @@ public class Window extends Canvas {
                 shouldRender = true;
             }
 
-            if(shouldRender) {
-                Graphics2D g = (Graphics2D) bs.getDrawGraphics();
-                g.setColor(backgroundColor);
-                g.fillRect(0,0,width,height);
-
-                // renderizar sprites e componentes
-                sprites.forEach(s -> s.render(g));
-                components.forEach(c -> c.render(g));
-
-                if(renderCallback!=null) renderCallback.accept(g);
-
-                if(showFPS){
-                    g.setColor(Color.WHITE);
-                    g.setFont(new Font("Arial", Font.BOLD, 20));
-                    g.drawString("FPS: "+fps,10,25);
+            if (shouldRender) {
+                BufferStrategy bs1 = getBufferStrategy();
+                if (bs1 == null) {
+                    createBufferStrategy(3);
+                    continue; // espera o próximo ciclo
                 }
 
-                g.dispose();
-                bs.show();
+                Graphics2D g = (Graphics2D) bs1.getDrawGraphics();
+                try {
+                    g.setColor(backgroundColor);
+                    g.fillRect(0, 0, getWidth(), getHeight());
+
+                    // renderizar sprites e componentes
+                    sprites.forEach(s -> s.render(g));
+                    components.forEach(c -> c.render(g));
+
+                    if (renderCallback != null) renderCallback.accept(g);
+
+                    if (showFPS) {
+                        g.setColor(Color.WHITE);
+                        g.setFont(new Font("Arial", Font.BOLD, 20));
+                        g.drawString("FPS: " + fps, 10, 25);
+                    }
+                } finally {
+                    g.dispose();
+                }
+
+                // tenta exibir o buffer — se falhar, recria
+                try {
+                    bs1.show();
+                } catch (Exception ex) {
+                    createBufferStrategy(3);
+                    continue;
+                }
+
                 Toolkit.getDefaultToolkit().sync();
                 fpsCounter++;
             }
+
 
             if(System.currentTimeMillis()-lastTimer>=1000){
                 fps=fpsCounter;

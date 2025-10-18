@@ -1,12 +1,5 @@
 package org.nerdola.openj3d.io;
 
-import org.nerdola.openj3d.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.util.*;
-import javax.imageio.ImageIO;
-
 /**
  * Coordenadas UV (textura).
  */

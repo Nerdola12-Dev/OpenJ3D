@@ -26,6 +26,8 @@ import org.nerdola.openj3d.core.Vertex;
  */
 public class ObjLoader implements ModelLoader {
 
+	private double SCALE = 400.0;
+	
     @Override
     public Mesh load(File objFile) throws IOException {
         List<Vertex> vertices = new ArrayList<>();
@@ -44,9 +46,9 @@ public class ObjLoader implements ModelLoader {
             if (line.startsWith("v ")) {
                 String[] parts = line.split("\\s+");
                 vertices.add(new Vertex(
-                        Double.parseDouble(parts[1]),
-                        -Double.parseDouble(parts[2]),
-                        Double.parseDouble(parts[3])
+                        Double.parseDouble(parts[1]) * SCALE,
+                        -Double.parseDouble(parts[2]) * SCALE,
+                        Double.parseDouble(parts[3]) * SCALE
                 ));
             } else if (line.startsWith("vt ")) {
                 String[] parts = line.split("\\s+");
@@ -135,5 +137,10 @@ public class ObjLoader implements ModelLoader {
             System.err.println("Falha ao ler MTL: " + e.getMessage());
         }
         return mats;
+    }
+    
+    public void setScale(double scale)
+    {
+    	
     }
 }

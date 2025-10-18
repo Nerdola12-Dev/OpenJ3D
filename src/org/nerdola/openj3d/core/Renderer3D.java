@@ -83,12 +83,14 @@ public class Renderer3D {
 
         Texture texture = t.material != null ? t.material.texture : null;
         if (texture == null) {
-            // fallback para cor sólida
             drawTriangle(img, zBuffer, t, t.color);
             return;
         }
 
-        BufferedImage texImg = texture.getLayer(0); // por enquanto, usa apenas a primeira camada
+        BufferedImage texImg = texture.getLayer(0);
+        int tw = texImg.getWidth();
+        int th = texImg.getHeight();
+        int[] texPixels = texImg.getRGB(0, 0, tw, th, null, 0, tw);
 
         for (int y = minY; y <= maxY; y++) {
             for (int x = minX; x <= maxX; x++) {
@@ -103,7 +105,16 @@ public class Renderer3D {
                         // UV interpolado
                         double u = b1 * t.uv1.u + b2 * t.uv2.u + b3 * t.uv3.u;
                         double v = b1 * t.uv1.v + b2 * t.uv2.v + b3 * t.uv3.v;
-                        int rgb = sampleTextureNearest(texImg, u, v);
+
+                        // Wrap/clamp UV
+                        u = u - Math.floor(u);
+                        v = v - Math.floor(v);
+                        int px = (int)(u * (tw - 1));
+                        int py = (int)((1.0 - v) * (th - 1));
+                        px = Math.max(0, Math.min(tw - 1, px));
+                        py = Math.max(0, Math.min(th - 1, py));
+
+                        int rgb = texPixels[py * tw + px];
                         img.setRGB(x, y, rgb);
                         zBuffer[zIndex] = depth;
                     }
@@ -111,6 +122,7 @@ public class Renderer3D {
             }
         }
     }
+
 
     /**
      * Amostragem por vizinho mais próximo. Converte UV (0..1) para pixel da textura.
